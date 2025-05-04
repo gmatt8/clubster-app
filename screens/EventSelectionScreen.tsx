@@ -1,21 +1,31 @@
 // screens/EventSelectionScreen.tsx
-
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { getEventsForManager } from '../api/events/route';
 
 export default function EventSelectionScreen() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getEventsForManager()
+      .then(setEvents)
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>clubster</Text>
-      <Text style={styles.sub}>PICK EVENT</Text>
-    </View>
+    <FlatList
+      data={events}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <View style={{ padding: 16 }}>
+          <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
+          <Text>{item.start_date}</Text>
+        </View>
+      )}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
-  text: { fontSize: 28, color: '#5B21B6', fontWeight: 'bold' },
-  sub: { fontSize: 18, marginTop: 8 },
-});
-
-
