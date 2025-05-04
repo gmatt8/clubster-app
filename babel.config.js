@@ -8,6 +8,13 @@ module.exports = function (api) {
         path: '.env.local',
         allowUndefined: false,
       }],
+      ['module-resolver', {
+        root: ['./'],
+        alias: {
+          '@': './',
+        },
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+      }],
     ],
   };
 };

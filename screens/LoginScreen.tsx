@@ -1,8 +1,8 @@
 // screens/LoginScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { supabase } from '../lib/supabase';
-import { getUserProfile } from '../lib/auth';
+import { supabase } from '@/lib/supabase';
+import { getUserProfile } from '@/lib/auth';
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');

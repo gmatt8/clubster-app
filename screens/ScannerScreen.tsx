@@ -1,7 +1,8 @@
 // screens/ScannerScreen.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
+import { validateTicket } from '@/lib/tickets';
 
 export default function ScannerScreen({ navigation }: any) {
   const [permission, requestPermission] = useCameraPermissions();
@@ -13,17 +14,22 @@ export default function ScannerScreen({ navigation }: any) {
     }
   }, [permission]);
 
-  const handleBarCodeScanned = ({ data }: { data: string }) => {
+  const handleBarCodeScanned = async ({ data }: { data: string }) => {
     if (!scanned) {
       setScanned(true);
-      console.log("QR Code Data:", data);
 
-      const isValid = data.includes("VALID");
+      try {
+        const result = await validateTicket(data);
 
-      navigation.navigate('Result', {
-        ticketId: data,
-        isValid,
-      });
+        navigation.navigate('Result', {
+          ticketId: data,
+          isValid: result.valid,
+        });
+      } catch (err) {
+        console.error('Errore validazione:', err);
+        Alert.alert('Errore', 'Errore nella validazione del ticket.');
+        setScanned(false);
+      }
     }
   };
 
@@ -47,7 +53,7 @@ export default function ScannerScreen({ navigation }: any) {
 
       <CameraView
         style={styles.camera}
-        facing={CameraType.back}
+        facing="back"
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
         barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
       />
