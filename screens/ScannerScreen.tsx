@@ -1,52 +1,73 @@
 // screens/ScannerScreen.tsx
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Alert } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { Camera, CameraType } from 'expo-camera';
 
 export default function ScannerScreen({ navigation }: any) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
+  const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     })();
   }, []);
 
   const handleBarCodeScanned = ({ data }: any) => {
-    setScanned(true);
-    // logica semplice: se QR contiene "VALID", lo consideriamo valido
-    const isValid = data.includes('VALID');
-    navigation.navigate('Result', { ticketId: data, isValid });
+    if (!scanned) {
+      setScanned(true);
+      console.log("QR Code Data:", data);
+
+      // Simula una chiamata API di validazione
+      const isValid = data.includes("VALID"); // oppure chiama un'API vera
+
+      navigation.navigate('Result', {
+        ticketId: data,
+        isValid,
+      });
+    }
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting camera permission...</Text>;
+    return <View><Text>Requesting camera permission...</Text></View>;
   }
 
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <View><Text>No access to camera</Text></View>;
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>clubster</Text>
       <Text style={styles.subtitle}>SCAN</Text>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={styles.scanner}
+
+      <Camera
+        ref={cameraRef}
+        style={styles.camera}
+        type={CameraType.back}
+        onBarCodeScanned={handleBarCodeScanned}
+        barCodeScannerSettings={{
+          barCodeTypes: ['qr'], // scansiona solo QR
+        }}
       />
-      {scanned && <Button title="Start Scan" onPress={() => setScanned(false)} />}
-      <Text style={styles.logout} onPress={() => navigation.popToTop()}>logout</Text>
+
+      {scanned && (
+        <Button title="Scan again" onPress={() => setScanned(false)} />
+      )}
+
+      <Text style={styles.logout} onPress={() => navigation.popToTop()}>
+        logout
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, justifyContent: 'center', backgroundColor: '#fff' },
+  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
   title: { fontSize: 28, color: '#5B21B6', fontWeight: 'bold', textAlign: 'center' },
   subtitle: { fontSize: 20, textAlign: 'center', marginBottom: 20 },
-  scanner: { flex: 1 },
+  camera: { flex: 1, borderRadius: 12, overflow: 'hidden' },
   logout: { textAlign: 'center', color: 'red', marginVertical: 16 },
 });
