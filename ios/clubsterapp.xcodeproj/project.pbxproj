@@ -7,29 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1169869D1D053DBC2CC02D4B /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B97C64B564EBBE1792AE99 /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		82531A3DAF87397A251B4998 /* libPods-clubsterapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0035E6B285996AD81F3972E8 /* libPods-clubsterapp.a */; };
+		9FE0B1343F98AB0ED3A38A8F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FAD72C40EF19EFFBB044F753 /* PrivacyInfo.xcprivacy */; };
+		B7D1AC3FAE9CF9CE7560BDBD /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804714729980AF92A05CF9E /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		DBF9B862A3B632A435CCBF29 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 674E33E72AC3B9AE1C026D56 /* PrivacyInfo.xcprivacy */; };
+		CD5B4A81329F9B4D679A0FFD /* libPods-clubsterapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4070D97BE74CBCBD5E44413 /* libPods-clubsterapp.a */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0035E6B285996AD81F3972E8 /* libPods-clubsterapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-clubsterapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08F9F7368BC35B5F023B5955 /* Pods-clubsterapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-clubsterapp.release.xcconfig"; path = "Target Support Files/Pods-clubsterapp/Pods-clubsterapp.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* clubsterapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = clubsterapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = clubsterapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = clubsterapp/Info.plist; sourceTree = "<group>"; };
-		25B97C64B564EBBE1792AE99 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-clubsterapp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		674E33E72AC3B9AE1C026D56 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = clubsterapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		6BF7959A3D5ED72519BEE3D1 /* Pods-clubsterapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-clubsterapp.release.xcconfig"; path = "Target Support Files/Pods-clubsterapp/Pods-clubsterapp.release.xcconfig"; sourceTree = "<group>"; };
-		74F7AF308180A8440EEA88BD /* Pods-clubsterapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-clubsterapp.debug.xcconfig"; path = "Target Support Files/Pods-clubsterapp/Pods-clubsterapp.debug.xcconfig"; sourceTree = "<group>"; };
+		46F2B09EE3BCDAB941E2F51D /* Pods-clubsterapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-clubsterapp.debug.xcconfig"; path = "Target Support Files/Pods-clubsterapp/Pods-clubsterapp.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = clubsterapp/SplashScreen.storyboard; sourceTree = "<group>"; };
+		B4070D97BE74CBCBD5E44413 /* libPods-clubsterapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-clubsterapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = clubsterapp/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* clubsterapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "clubsterapp-Bridging-Header.h"; path = "clubsterapp/clubsterapp-Bridging-Header.h"; sourceTree = "<group>"; };
+		F804714729980AF92A05CF9E /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-clubsterapp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		FAD72C40EF19EFFBB044F753 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = clubsterapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,13 +37,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82531A3DAF87397A251B4998 /* libPods-clubsterapp.a in Frameworks */,
+				CD5B4A81329F9B4D679A0FFD /* libPods-clubsterapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		065280EC0E14F7C0E95021DD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				46F2B09EE3BCDAB941E2F51D /* Pods-clubsterapp.debug.xcconfig */,
+				08F9F7368BC35B5F023B5955 /* Pods-clubsterapp.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* clubsterapp */ = {
 			isa = PBXGroup;
 			children = (
@@ -53,7 +63,15 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				674E33E72AC3B9AE1C026D56 /* PrivacyInfo.xcprivacy */,
+				FAD72C40EF19EFFBB044F753 /* PrivacyInfo.xcprivacy */,
+			);
+			name = clubsterapp;
+			sourceTree = "<group>";
+		};
+		1BFFE35A83BE79C8E59D919D /* clubsterapp */ = {
+			isa = PBXGroup;
+			children = (
+				F804714729980AF92A05CF9E /* ExpoModulesProvider.swift */,
 			);
 			name = clubsterapp;
 			sourceTree = "<group>";
@@ -62,25 +80,9 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				0035E6B285996AD81F3972E8 /* libPods-clubsterapp.a */,
+				B4070D97BE74CBCBD5E44413 /* libPods-clubsterapp.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		45ADEFECC849CB44F30E18D6 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				751087381957C3DDA5FCE1C5 /* clubsterapp */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
-		751087381957C3DDA5FCE1C5 /* clubsterapp */ = {
-			isa = PBXGroup;
-			children = (
-				25B97C64B564EBBE1792AE99 /* ExpoModulesProvider.swift */,
-			);
-			name = clubsterapp;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -97,8 +99,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				EF573BF621679E0F838860D9 /* Pods */,
-				45ADEFECC849CB44F30E18D6 /* ExpoModulesProviders */,
+				065280EC0E14F7C0E95021DD /* Pods */,
+				EF15802B3AAFB8180044E550 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -122,14 +124,12 @@
 			path = clubsterapp/Supporting;
 			sourceTree = "<group>";
 		};
-		EF573BF621679E0F838860D9 /* Pods */ = {
+		EF15802B3AAFB8180044E550 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				74F7AF308180A8440EEA88BD /* Pods-clubsterapp.debug.xcconfig */,
-				6BF7959A3D5ED72519BEE3D1 /* Pods-clubsterapp.release.xcconfig */,
+				1BFFE35A83BE79C8E59D919D /* clubsterapp */,
 			);
-			name = Pods;
-			path = Pods;
+			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "clubsterapp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				225722D2F472DD30B1288760 /* [Expo] Configure project */,
+				05BE9E93901DF3BD493F24CD /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				5E25A6642688DC21BF543AE1 /* [CP] Embed Pods Frameworks */,
+				A26BD6E6593A20FB5A3E9647 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				DBF9B862A3B632A435CCBF29 /* PrivacyInfo.xcprivacy in Resources */,
+				9FE0B1343F98AB0ED3A38A8F /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +218,25 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n# Source .xcode.env.updates if it exists to allow\n# SKIP_BUNDLING to be unset if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.updates\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.updates\"\nfi\n# Source local changes to allow overrides\n# if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
 		};
+		05BE9E93901DF3BD493F24CD /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-clubsterapp/expo-configure-project.sh\"\n";
+		};
 		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -238,43 +257,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		225722D2F472DD30B1288760 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-clubsterapp/expo-configure-project.sh\"\n";
-		};
-		5E25A6642688DC21BF543AE1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-clubsterapp/Pods-clubsterapp-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-clubsterapp/Pods-clubsterapp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
@@ -313,6 +295,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-clubsterapp/Pods-clubsterapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A26BD6E6593A20FB5A3E9647 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-clubsterapp/Pods-clubsterapp-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-clubsterapp/Pods-clubsterapp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -321,7 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				1169869D1D053DBC2CC02D4B /* ExpoModulesProvider.swift in Sources */,
+				B7D1AC3FAE9CF9CE7560BDBD /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +330,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74F7AF308180A8440EEA88BD /* Pods-clubsterapp.debug.xcconfig */;
+			baseConfigurationReference = 46F2B09EE3BCDAB941E2F51D /* Pods-clubsterapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -366,7 +366,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6BF7959A3D5ED72519BEE3D1 /* Pods-clubsterapp.release.xcconfig */;
+			baseConfigurationReference = 08F9F7368BC35B5F023B5955 /* Pods-clubsterapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

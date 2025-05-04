@@ -1,27 +1,24 @@
 // screens/ScannerScreen.tsx
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import { CameraView, useCameraPermissions, CameraType } from 'expo-camera';
 
 export default function ScannerScreen({ navigation }: any) {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
-  const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+    if (!permission) {
+      requestPermission();
+    }
+  }, [permission]);
 
-  const handleBarCodeScanned = ({ data }: any) => {
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
     if (!scanned) {
       setScanned(true);
       console.log("QR Code Data:", data);
 
-      // Simula una chiamata API di validazione
-      const isValid = data.includes("VALID"); // oppure chiama un'API vera
+      const isValid = data.includes("VALID");
 
       navigation.navigate('Result', {
         ticketId: data,
@@ -30,12 +27,17 @@ export default function ScannerScreen({ navigation }: any) {
     }
   };
 
-  if (hasPermission === null) {
-    return <View><Text>Requesting camera permission...</Text></View>;
+  if (!permission) {
+    return <View style={styles.center}><Text>Requesting camera permissions...</Text></View>;
   }
 
-  if (hasPermission === false) {
-    return <View><Text>No access to camera</Text></View>;
+  if (!permission.granted) {
+    return (
+      <View style={styles.center}>
+        <Text>No access to camera</Text>
+        <Button title="Allow Camera" onPress={requestPermission} />
+      </View>
+    );
   }
 
   return (
@@ -43,14 +45,11 @@ export default function ScannerScreen({ navigation }: any) {
       <Text style={styles.title}>clubster</Text>
       <Text style={styles.subtitle}>SCAN</Text>
 
-      <Camera
-        ref={cameraRef}
+      <CameraView
         style={styles.camera}
-        type={CameraType.back}
-        onBarCodeScanned={handleBarCodeScanned}
-        barCodeScannerSettings={{
-          barCodeTypes: ['qr'], // scansiona solo QR
-        }}
+        facing={CameraType.back}
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+        barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
       />
 
       {scanned && (
@@ -70,4 +69,5 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 20, textAlign: 'center', marginBottom: 20 },
   camera: { flex: 1, borderRadius: 12, overflow: 'hidden' },
   logout: { textAlign: 'center', color: 'red', marginVertical: 16 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
