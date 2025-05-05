@@ -1,16 +1,18 @@
 // api/events/route.ts
 import { supabase } from '@/lib/supabase';
+import { getClubIdForManager } from '@/lib/club';
 
 export async function getEventsForManager() {
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
   if (userError || !user) {
     throw new Error("Utente non autenticato");
   }
 
-  const clubId = user.user_metadata?.club_id; // Assicurati che esista
-  if (!clubId) {
-    throw new Error("club_id non trovato nei metadata utente");
-  }
+  const clubId = await getClubIdForManager(user.id); // <-- usa questa funzione
 
   const now = new Date().toISOString();
   const { data, error } = await supabase

@@ -61,10 +61,6 @@ export default function ScannerScreen({ navigation }: any) {
       {scanned && (
         <Button title="Scan again" onPress={() => setScanned(false)} />
       )}
-
-      <Text style={styles.logout} onPress={() => navigation.popToTop()}>
-        logout
-      </Text>
     </View>
   );
 }

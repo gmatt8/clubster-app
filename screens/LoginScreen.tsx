@@ -1,6 +1,6 @@
 // screens/LoginScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import { getUserProfile } from '@/lib/auth';
 
@@ -46,7 +46,7 @@ export default function LoginScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>clubster</Text>
+      <Image source={require('@/assets/clubster-logo.png')} style={styles.logoImage} />
       <Text style={styles.title}>Manager Login</Text>
 
       <TextInput
@@ -75,7 +75,13 @@ export default function LoginScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 24, backgroundColor: '#fff' },
-  logo: { fontSize: 28, color: '#5B21B6', fontWeight: 'bold', textAlign: 'center' },
+  logoImage: {
+    width: '80%',
+    height: 100,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginBottom: 24,
+  },
   title: { fontSize: 20, marginBottom: 20, textAlign: 'center' },
   input: {
     borderWidth: 1,

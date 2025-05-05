@@ -1,4 +1,4 @@
-package com.anonymous.clubsterapp
+package com.helloworld
 
 import android.os.Build
 import android.os.Bundle

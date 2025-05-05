@@ -1,4 +1,4 @@
-package com.anonymous.clubsterapp
+package com.helloworld
 
 import android.app.Application
 import android.content.res.Configuration
