@@ -87,7 +87,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.clubsterapp'
+    namespace "com.clubsterapp"
     defaultConfig {
         applicationId 'com.anonymous.clubsterapp'
         minSdkVersion rootProject.ext.minSdkVersion
