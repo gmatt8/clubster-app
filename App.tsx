@@ -2,7 +2,6 @@
 import React from 'react';
 import AppNavigator from './navigation/AppNavigator';
 import { EventProvider } from './context/EventContext';
-<<<<<<< HEAD
 
 // Fix per problemi di rete su simulatore iOS
 if (__DEV__) {
