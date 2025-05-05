@@ -35,7 +35,8 @@ export default function LoginScreen({ navigation }: any) {
         return;
       }
 
-      navigation.replace('EventSelection');
+      // Navigazione corretta verso la Main Tab
+      navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
     } catch (err: any) {
       await supabase.auth.signOut();
       setError(err.message || 'Profile not found.');

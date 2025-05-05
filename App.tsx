@@ -1,8 +1,8 @@
 // App.tsx
 import React from 'react';
-import 'react-native-url-polyfill/auto';
 import AppNavigator from './navigation/AppNavigator';
 import { EventProvider } from './context/EventContext';
+<<<<<<< HEAD
 
 // Fix per problemi di rete su simulatore iOS
 if (__DEV__) {

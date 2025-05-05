@@ -12,7 +12,8 @@ export async function getEventsForManager() {
     throw new Error("Utente non autenticato");
   }
 
-  const clubId = await getClubIdForManager(user.id); // <-- usa questa funzione
+  const clubId = await getClubIdForManager(user.id); // ← usa il DB, non metadata
+
 
   const now = new Date().toISOString();
   const { data, error } = await supabase

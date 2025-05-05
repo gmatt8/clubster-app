@@ -3,10 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { validateTicket } from '@/lib/tickets';
+import { useEvent } from '@/context/EventContext';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ScannerScreen({ navigation }: any) {
+export default function ScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+  const { selectedEvent } = useEvent();
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!permission) {
@@ -15,11 +19,11 @@ export default function ScannerScreen({ navigation }: any) {
   }, [permission]);
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
-    if (!scanned) {
+    if (!scanned && selectedEvent) {
       setScanned(true);
 
       try {
-        const result = await validateTicket(data);
+        const result = await validateTicket(data, selectedEvent.id);
 
         navigation.navigate('Result', {
           ticketId: data,
@@ -34,22 +38,30 @@ export default function ScannerScreen({ navigation }: any) {
   };
 
   if (!permission) {
-    return <View style={styles.center}><Text>Requesting camera permissions...</Text></View>;
+    return <View style={styles.center}><Text>Richiesta permessi fotocamera...</Text></View>;
   }
 
   if (!permission.granted) {
     return (
       <View style={styles.center}>
-        <Text>No access to camera</Text>
-        <Button title="Allow Camera" onPress={requestPermission} />
+        <Text>Nessun accesso alla fotocamera</Text>
+        <Button title="Consenti fotocamera" onPress={requestPermission} />
+      </View>
+    );
+  }
+
+  if (!selectedEvent) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.notice}>Nessun evento selezionato</Text>
+        <Button title="Scegli un evento" onPress={() => navigation.navigate('Eventi')} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>clubster</Text>
-      <Text style={styles.subtitle}>SCAN</Text>
+      <Text style={styles.title}>Scanner - {selectedEvent.name}</Text>
 
       <CameraView
         style={styles.camera}
@@ -59,17 +71,21 @@ export default function ScannerScreen({ navigation }: any) {
       />
 
       {scanned && (
-        <Button title="Scan again" onPress={() => setScanned(false)} />
+        <Button title="Scansiona di nuovo" onPress={() => setScanned(false)} />
       )}
+
+      <View style={styles.footer}>
+        <Button title="Scansiona per un altro evento" onPress={() => navigation.navigate('Eventi')} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  title: { fontSize: 28, color: '#5B21B6', fontWeight: 'bold', textAlign: 'center' },
-  subtitle: { fontSize: 20, textAlign: 'center', marginBottom: 20 },
+  title: { fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 },
   camera: { flex: 1, borderRadius: 12, overflow: 'hidden' },
-  logout: { textAlign: 'center', color: 'red', marginVertical: 16 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 },
+  notice: { fontSize: 16, marginBottom: 12 },
+  footer: { marginTop: 20 },
 });
