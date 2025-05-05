@@ -4,7 +4,6 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EventSelectionScreen from '@/screens/EventSelectionScreen';
 import ScannerScreen from '@/screens/ScannerScreen';
-import ResultScreen from '@/screens/ResultScreen';
 import { Button } from 'react-native';
 import { supabase } from '@/lib/supabase';
 
@@ -28,11 +27,6 @@ export default function MainStack() {
         name="Scanner"
         component={ScannerScreen}
         options={{ title: 'Scanner', headerRight: LogoutButton }}
-      />
-      <Stack.Screen
-        name="Result"
-        component={ResultScreen}
-        options={{ title: 'Risultato', headerRight: LogoutButton }}
       />
     </Stack.Navigator>
   );
