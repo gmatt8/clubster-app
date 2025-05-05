@@ -1,4 +1,4 @@
-// App.tsx
+//  App.tsx
 import React from 'react';
 import AppNavigator from './navigation/AppNavigator';
 import { EventProvider } from './context/EventContext';
