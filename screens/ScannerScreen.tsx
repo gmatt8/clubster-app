@@ -13,6 +13,8 @@ import { validateTicket } from '@/lib/tickets';
 import { useEvent } from '@/context/EventContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainStackParamList } from '@/types/navigation';
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -23,16 +25,30 @@ function formatDate(dateString: string): string {
   });
 }
 
+function getReasonMessage(reason: string): string {
+  switch (reason) {
+    case 'not_found':
+      return 'Ticket not found.';
+    case 'wrong_event':
+      return 'This ticket is for a different event.';
+    case 'already_scanned':
+      return 'This ticket has already been scanned.';
+    case 'update_failed':
+      return 'Error updating ticket. Try again.';
+    default:
+      return 'Invalid ticket.';
+  }
+}
+
 export default function ScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [facing, setFacing] = useState<'back' | 'front'>('back');
-  const [torch, setTorch] = useState<'off' | 'on'>('off');
 
   const [scanResult, setScanResult] = useState<null | { isValid: boolean; ticketId: string; reason?: string }>(null);
 
   const { selectedEvent } = useEvent();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
 
   useEffect(() => {
     if (!permission) {
@@ -97,8 +113,7 @@ export default function ScannerScreen() {
             style={styles.camera}
             facing={facing}
             onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-            barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
-            torch={torch}
+            barcodeScannerSettings={{ barcodeTypes: ['qr'] as const }}
           />
         )}
         <View style={styles.overlayFrame} />
@@ -110,25 +125,10 @@ export default function ScannerScreen() {
           >
             <Ionicons name="camera-reverse-outline" size={28} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => setTorch(torch === 'off' ? 'on' : 'off')}
-          >
-            <Ionicons
-              name={torch === 'on' ? 'flashlight' : 'flashlight-outline'}
-              size={28}
-              color="#fff"
-            />
-          </TouchableOpacity>
         </View>
 
         {scanResult && (
-          <View
-            style={[
-              styles.resultOverlay,
-              { backgroundColor: scanResult.isValid ? '#D1FAE5' : '#FECACA' },
-            ]}
-          >
+          <View style={[StyleSheet.absoluteFillObject, styles.resultOverlay]}>
             <Ionicons
               name={scanResult.isValid ? 'checkmark-circle-outline' : 'close-circle-outline'}
               size={100}
@@ -145,9 +145,8 @@ export default function ScannerScreen() {
             </Text>
             <Text style={styles.ticketId}>Ticket ID: {scanResult.ticketId}</Text>
             {!scanResult.isValid && scanResult.reason && (
-              <Text style={styles.reasonText}>Reason: {scanResult.reason}</Text>
+              <Text style={styles.reasonText}>{getReasonMessage(scanResult.reason)}</Text>
             )}
-
             <TouchableOpacity style={styles.button} onPress={resetScanner}>
               <Ionicons name="scan-outline" size={20} color="#fff" />
               <Text style={styles.buttonText}>Scan Again</Text>
@@ -156,7 +155,8 @@ export default function ScannerScreen() {
         )}
       </View>
 
-      <TouchableOpacity style={styles.changeEventButton} onPress={() => navigation.navigate('Events')}>
+      <TouchableOpacity style={styles.changeEventButton} onPress={() => navigation.navigate('EventSelection')}
+      >
         <Ionicons name="refresh-outline" size={20} color="#3b82f6" />
         <Text style={styles.changeEventText}>Change Event</Text>
       </TouchableOpacity>
@@ -220,8 +220,6 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   resultOverlay: {
-    position: 'absolute',
-    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
@@ -268,5 +266,11 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,
+  },
+  changeEventText: {
+    marginLeft: 8,
+    fontSize: 16,
+    color: '#3b82f6',
+    fontWeight: '500',
   },
 });

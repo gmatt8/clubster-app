@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState } from 'react';
 type Event = {
   id: string;
   name: string;
+  start_date: string; // ✅ aggiunto campo usato nel componente
 };
 
 type EventContextType = {
