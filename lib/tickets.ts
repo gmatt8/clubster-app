@@ -13,17 +13,17 @@ export async function validateTicket(
     .single();
 
   if (error || !ticket) {
-    return { valid: false, reason: 'not_found' };
+    return { valid: false, reason: 'Not Found' };
   }
 
   // 2. Verifica se appartiene all'evento giusto
   if (ticket.event_id !== eventId) {
-    return { valid: false, reason: 'wrong_event' };
+    return { valid: false, reason: 'Wrong Event' };
   }
 
   // 3. Verifica se è già stato scansionato
   if (ticket.scanned) {
-    return { valid: false, reason: 'already_scanned' };
+    return { valid: false, reason: 'Already Scanned' };
   }
 
   // 4. Aggiorna: scanned true e timestamp
