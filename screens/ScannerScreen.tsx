@@ -29,7 +29,7 @@ export default function ScannerScreen() {
   const [facing, setFacing] = useState<'back' | 'front'>('back');
   const [torch, setTorch] = useState<'off' | 'on'>('off');
 
-  const [scanResult, setScanResult] = useState<null | { isValid: boolean; ticketId: string }>(null);
+  const [scanResult, setScanResult] = useState<null | { isValid: boolean; ticketId: string; reason?: string }>(null);
 
   const { selectedEvent } = useEvent();
   const navigation = useNavigation();
@@ -45,7 +45,7 @@ export default function ScannerScreen() {
       setScanned(true);
       try {
         const result = await validateTicket(data, selectedEvent.id);
-        setScanResult({ isValid: result.valid, ticketId: data });
+        setScanResult({ isValid: result.valid, ticketId: data, reason: result.reason });
       } catch (err) {
         console.error('Validation error:', err);
         Alert.alert('Error', 'Failed to validate the ticket.');
@@ -144,6 +144,9 @@ export default function ScannerScreen() {
               {scanResult.isValid ? 'VALID TICKET' : 'INVALID TICKET'}
             </Text>
             <Text style={styles.ticketId}>Ticket ID: {scanResult.ticketId}</Text>
+            {!scanResult.isValid && scanResult.reason && (
+              <Text style={styles.reasonText}>Reason: {scanResult.reason}</Text>
+            )}
 
             <TouchableOpacity style={styles.button} onPress={resetScanner}>
               <Ionicons name="scan-outline" size={20} color="#fff" />
@@ -235,6 +238,11 @@ const styles = StyleSheet.create({
   ticketId: {
     fontSize: 16,
     color: '#374151',
+    marginBottom: 8,
+  },
+  reasonText: {
+    fontSize: 14,
+    color: '#6b7280',
     marginBottom: 32,
   },
   button: {
@@ -260,11 +268,5 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,
-  },
-  changeEventText: {
-    marginLeft: 8,
-    fontSize: 16,
-    color: '#3b82f6',
-    fontWeight: '500',
   },
 });
