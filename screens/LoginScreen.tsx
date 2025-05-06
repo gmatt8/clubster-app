@@ -1,14 +1,38 @@
 // screens/LoginScreen.tsx
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { supabase } from '@/lib/supabase';
 import { getUserProfile } from '@/lib/auth';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // 🚀 Auto-redirect se già loggato
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        const profile = await getUserProfile(data.user.id);
+        if (profile.role === 'manager') {
+          navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+        }
+      }
+    };
+    checkUser();
+  }, []);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -35,7 +59,6 @@ export default function LoginScreen({ navigation }: any) {
         return;
       }
 
-      // Navigazione corretta verso la Main Tab
       navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
     } catch (err: any) {
       await supabase.auth.signOut();
@@ -57,17 +80,34 @@ export default function LoginScreen({ navigation }: any) {
         style={styles.input}
         onChangeText={setEmail}
         value={email}
+        placeholderTextColor="#999"
       />
 
-      <TextInput
-        placeholder="Password"
-        secureTextEntry
-        style={styles.input}
-        onChangeText={setPassword}
-        value={password}
-      />
+      <View style={styles.passwordWrapper}>
+        <TextInput
+          placeholder="Password"
+          secureTextEntry={!showPassword}
+          style={[styles.input, { flex: 1, marginBottom: 0 }]}
+          onChangeText={setPassword}
+          value={password}
+          placeholderTextColor="#999"
+        />
+        <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)} style={styles.eyeButton}>
+          <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={20} color="#666" />
+        </TouchableOpacity>
+      </View>
 
-      <Button title={loading ? 'Logging in...' : 'Log In'} onPress={handleLogin} />
+      <TouchableOpacity
+        style={[styles.loginButton, loading && styles.disabledButton]}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.loginText}>Log In</Text>
+        )}
+      </TouchableOpacity>
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
@@ -75,7 +115,12 @@ export default function LoginScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 24, backgroundColor: '#fff' },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24,
+    backgroundColor: '#fff',
+  },
   logoImage: {
     width: '80%',
     height: 100,
@@ -83,14 +128,51 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 24,
   },
-  title: { fontSize: 20, marginBottom: 20, textAlign: 'center' },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 12,
-    backgroundColor: '#f5f5f5',
+  title: {
+    fontSize: 24,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 24,
+    color: '#111827',
   },
-  error: { color: 'red', textAlign: 'center', marginTop: 10 },
+  input: {
+    backgroundColor: '#f3f4f6',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 16,
+    fontSize: 16,
+    color: '#111827',
+  },
+  passwordWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    backgroundColor: '#f3f4f6',
+    borderRadius: 10,
+    paddingRight: 12,
+  },
+  eyeButton: {
+    padding: 10,
+  },
+  loginButton: {
+    backgroundColor: '#3b82f6',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  loginText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  error: {
+    color: '#ef4444',
+    textAlign: 'center',
+    marginTop: 16,
+    fontSize: 14,
+  },
 });

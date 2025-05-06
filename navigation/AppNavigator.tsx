@@ -30,15 +30,8 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!user ? (
-          <Stack.Screen name="Login" component={LoginScreen} />
-        ) : null}
-
-        {user ? (
-          <>
-            <Stack.Screen name="Main" component={BottomTabNavigator} />
-          </>
-        ) : null}
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Main" component={BottomTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );

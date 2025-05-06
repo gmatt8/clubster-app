@@ -13,8 +13,13 @@ import { validateTicket } from '@/lib/tickets';
 import { useEvent } from '@/context/EventContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MainStackParamList } from '@/types/navigation';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
+type TabParamList = {
+  Events: undefined;
+  Scanner: undefined;
+  Settings: undefined;
+};
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -44,11 +49,10 @@ export default function ScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [facing, setFacing] = useState<'back' | 'front'>('back');
-
   const [scanResult, setScanResult] = useState<null | { isValid: boolean; ticketId: string; reason?: string }>(null);
 
   const { selectedEvent } = useEvent();
-  const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+  const navigation = useNavigation<BottomTabNavigationProp<TabParamList>>();
 
   useEffect(() => {
     if (!permission) {
@@ -128,17 +132,23 @@ export default function ScannerScreen() {
         </View>
 
         {scanResult && (
-          <View style={[StyleSheet.absoluteFillObject, styles.resultOverlay]}>
+          <View
+            style={[
+              StyleSheet.absoluteFillObject,
+              styles.resultOverlay,
+              { backgroundColor: scanResult.isValid ? '#d1fae5' : '#fee2e2' },
+            ]}
+          >
             <Ionicons
               name={scanResult.isValid ? 'checkmark-circle-outline' : 'close-circle-outline'}
               size={100}
-              color={scanResult.isValid ? '#10B981' : '#EF4444'}
+              color={scanResult.isValid ? '#10b981' : '#ef4444'}
               style={styles.icon}
             />
             <Text
               style={[
                 styles.statusText,
-                { color: scanResult.isValid ? '#065F46' : '#991B1B' },
+                { color: scanResult.isValid ? '#065f46' : '#991b1b' },
               ]}
             >
               {scanResult.isValid ? 'VALID TICKET' : 'INVALID TICKET'}
@@ -155,7 +165,9 @@ export default function ScannerScreen() {
         )}
       </View>
 
-      <TouchableOpacity style={styles.changeEventButton} onPress={() => navigation.navigate('EventSelection')}
+      <TouchableOpacity
+        style={styles.changeEventButton}
+        onPress={() => navigation.navigate('Events')}
       >
         <Ionicons name="refresh-outline" size={20} color="#3b82f6" />
         <Text style={styles.changeEventText}>Change Event</Text>
@@ -169,7 +181,6 @@ const styles = StyleSheet.create({
   header: { alignItems: 'center', marginBottom: 12 },
   title: { fontSize: 20, fontWeight: '600', color: '#111827' },
   subtitle: { fontSize: 14, color: '#6b7280', marginTop: 2 },
-
   cameraWrapper: {
     flex: 1,
     paddingHorizontal: 16,

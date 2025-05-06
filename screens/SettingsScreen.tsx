@@ -1,5 +1,5 @@
 // screens/SettingsScreen.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,19 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { supabase } from '@/lib/supabase';
+import Constants from 'expo-constants';
 
 export default function SettingsScreen() {
   const navigation = useNavigation();
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data.user?.email) setUserEmail(data.user.email);
+    };
+    fetchUser();
+  }, []);
 
   const handleLogout = async () => {
     Alert.alert('Log out', 'Are you sure you want to log out?', [
@@ -23,10 +33,7 @@ export default function SettingsScreen() {
         style: 'destructive',
         onPress: async () => {
           await supabase.auth.signOut();
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'Login' as never }],
-          });
+          navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
         },
       },
     ]);
@@ -37,6 +44,9 @@ export default function SettingsScreen() {
       <View style={styles.header}>
         <Ionicons name="person-circle-outline" size={80} color="#3b82f6" />
         <Text style={styles.username}>Settings</Text>
+        {userEmail ? (
+          <Text style={styles.email}>Logged in as: {userEmail}</Text>
+        ) : null}
       </View>
 
       <View style={styles.section}>
@@ -45,6 +55,10 @@ export default function SettingsScreen() {
           <Ionicons name="log-out-outline" size={22} color="#ef4444" />
           <Text style={styles.logoutText}>Log out</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.footer}>
+        <Text style={styles.version}>App version: {Constants.manifest?.version || '1.0.0'}</Text>
       </View>
     </SafeAreaView>
   );
@@ -59,7 +73,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#e5e7eb',
   },
-  username: { fontSize: 20, fontWeight: '600', color: '#1f2937', marginTop: 8 },
+  username: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#1f2937',
+    marginTop: 8,
+  },
+  email: {
+    fontSize: 14,
+    color: '#6b7280',
+    marginTop: 4,
+  },
   section: {
     paddingHorizontal: 20,
     paddingTop: 20,
@@ -88,5 +112,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#ef4444',
     fontWeight: '500',
+  },
+  footer: {
+    marginTop: 'auto',
+    padding: 16,
+    alignItems: 'center',
+  },
+  version: {
+    fontSize: 12,
+    color: '#9ca3af',
   },
 });

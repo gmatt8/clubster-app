@@ -13,7 +13,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-
 import { getEventsForManager } from '@/api/events/route';
 import { useEvent } from '@/context/EventContext';
 
@@ -72,7 +71,7 @@ export default function EventSelectionScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Your Events</Text>
+        <Text style={styles.title}>Select an Event</Text>
       </View>
 
       {loading ? (
@@ -85,19 +84,24 @@ export default function EventSelectionScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#3b82f6']} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#3b82f6"]} />
           }
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}
-              activeOpacity={0.7}
+              activeOpacity={0.85}
               onPress={() => {
                 setSelectedEvent(item);
                 navigation.navigate('Scanner');
               }}
             >
-              <Text style={styles.eventName}>{item.name}</Text>
-              <Text style={styles.eventDate}>{formatDate(item.start_date)}</Text>
+              <View style={styles.cardContent}>
+                <Ionicons name="calendar-outline" size={24} color="#3b82f6" style={{ marginRight: 12 }} />
+                <View>
+                  <Text style={styles.eventName}>{item.name}</Text>
+                  <Text style={styles.eventDate}>{formatDate(item.start_date)}</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -120,18 +124,21 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: '600', color: '#111827' },
   listContent: { padding: 16 },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     borderRadius: 16,
-    padding: 20,
+    padding: 16,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
-    elevation: 3,
+    elevation: 2,
   },
-  eventName: { fontSize: 18, fontWeight: '600', color: '#1f2937' },
-  eventDate: { fontSize: 14, color: '#3b82f6', marginTop: 4 },
+  cardContent: { flexDirection: 'row', alignItems: 'center' },
+  eventName: { fontSize: 18, fontWeight: '600', color: '#111827' },
+  eventDate: { fontSize: 14, color: '#6b7280', marginTop: 4 },
   emptyText: {
     marginTop: 50,
     textAlign: 'center',
