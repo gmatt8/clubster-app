@@ -45,7 +45,7 @@ export default function SettingsScreen() {
         <Ionicons name="person-circle-outline" size={80} color="#3b82f6" />
         <Text style={styles.username}>Settings</Text>
         {userEmail ? (
-          <Text style={styles.email}>Logged in as: {userEmail}</Text>
+          <Text style={styles.email}>{userEmail}</Text>
         ) : null}
       </View>
 

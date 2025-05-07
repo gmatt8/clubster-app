@@ -76,15 +76,16 @@ export default function EventSelectionScreen() {
 
       {loading ? (
         <ActivityIndicator size="large" color="#3b82f6" style={{ marginTop: 50 }} />
-      ) : events.length === 0 ? (
-        <Text style={styles.emptyText}>No events available.</Text>
       ) : (
         <FlatList
           data={events}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={events.length === 0 ? styles.emptyContainer : styles.listContent}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#3b82f6"]} />
+          }
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>No events available.</Text>
           }
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -123,6 +124,12 @@ const styles = StyleSheet.create({
   },
   title: { fontSize: 24, fontWeight: '600', color: '#111827' },
   listContent: { padding: 16 },
+  emptyContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
   card: {
     backgroundColor: '#ffffff',
     borderRadius: 16,
@@ -140,7 +147,6 @@ const styles = StyleSheet.create({
   eventName: { fontSize: 18, fontWeight: '600', color: '#111827' },
   eventDate: { fontSize: 14, color: '#6b7280', marginTop: 4 },
   emptyText: {
-    marginTop: 50,
     textAlign: 'center',
     color: '#6b7280',
     fontSize: 16,
