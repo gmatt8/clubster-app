@@ -11,6 +11,7 @@ import {
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { validateTicket } from '@/lib/tickets';
 import { useEvent } from '@/context/EventContext';
+import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -49,9 +50,14 @@ export default function ScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [facing, setFacing] = useState<'back' | 'front'>('back');
-  const [scanResult, setScanResult] = useState<null | { isValid: boolean; ticketId: string; reason?: string }>(null);
+  const [scanResult, setScanResult] = useState<null | {
+    isValid: boolean;
+    ticketId: string;
+    reason?: string;
+  }>(null);
 
   const { selectedEvent } = useEvent();
+  const { role } = useUser();
   const navigation = useNavigation<BottomTabNavigationProp<TabParamList>>();
 
   useEffect(() => {
@@ -65,7 +71,11 @@ export default function ScannerScreen() {
       setScanned(true);
       try {
         const result = await validateTicket(data, selectedEvent.id);
-        setScanResult({ isValid: result.valid, ticketId: data, reason: result.reason });
+        setScanResult({
+          isValid: result.valid,
+          ticketId: data,
+          reason: result.reason,
+        });
       } catch (err) {
         console.error('Validation error:', err);
         Alert.alert('Error', 'Failed to validate the ticket.');
@@ -80,14 +90,20 @@ export default function ScannerScreen() {
   };
 
   if (!permission) {
-    return <View style={styles.center}><Text>Requesting camera permissions...</Text></View>;
+    return (
+      <View style={styles.center}>
+        <Text>Requesting camera permissions...</Text>
+      </View>
+    );
   }
 
   if (!permission.granted) {
     return (
       <View style={styles.center}>
         <Ionicons name="camera-outline" size={48} color="#9ca3af" />
-        <Text style={styles.message}>Camera access is required to scan tickets.</Text>
+        <Text style={styles.message}>
+          Camera access is required to scan tickets.
+        </Text>
         <TouchableOpacity style={styles.button} onPress={requestPermission}>
           <Text style={styles.buttonText}>Allow Camera</Text>
         </TouchableOpacity>
@@ -104,11 +120,22 @@ export default function ScannerScreen() {
     );
   }
 
+  if (!role) {
+    return (
+      <View style={styles.center}>
+        <Ionicons name="lock-closed-outline" size={48} color="#ef4444" />
+        <Text style={styles.message}>You are not authorized to use the scanner.</Text>
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{selectedEvent.name}</Text>
-        <Text style={styles.subtitle}>{formatDate(selectedEvent.start_date)}</Text>
+        <Text style={styles.subtitle}>
+          {formatDate(selectedEvent.start_date)}
+        </Text>
       </View>
 
       <View style={styles.cameraWrapper}>
@@ -125,7 +152,9 @@ export default function ScannerScreen() {
         <View style={styles.cameraControls}>
           <TouchableOpacity
             style={styles.iconButton}
-            onPress={() => setFacing(facing === 'back' ? 'front' : 'back')}
+            onPress={() =>
+              setFacing((prev) => (prev === 'back' ? 'front' : 'back'))
+            }
           >
             <Ionicons name="camera-reverse-outline" size={28} color="#fff" />
           </TouchableOpacity>
@@ -136,11 +165,17 @@ export default function ScannerScreen() {
             style={[
               StyleSheet.absoluteFillObject,
               styles.resultOverlay,
-              { backgroundColor: scanResult.isValid ? '#d1fae5' : '#fee2e2' },
+              {
+                backgroundColor: scanResult.isValid ? '#d1fae5' : '#fee2e2',
+              },
             ]}
           >
             <Ionicons
-              name={scanResult.isValid ? 'checkmark-circle-outline' : 'close-circle-outline'}
+              name={
+                scanResult.isValid
+                  ? 'checkmark-circle-outline'
+                  : 'close-circle-outline'
+              }
               size={100}
               color={scanResult.isValid ? '#10b981' : '#ef4444'}
               style={styles.icon}
@@ -153,9 +188,13 @@ export default function ScannerScreen() {
             >
               {scanResult.isValid ? 'VALID TICKET' : 'INVALID TICKET'}
             </Text>
-            <Text style={styles.ticketId}>Ticket ID: {scanResult.ticketId}</Text>
+            <Text style={styles.ticketId}>
+              Ticket ID: {scanResult.ticketId}
+            </Text>
             {!scanResult.isValid && scanResult.reason && (
-              <Text style={styles.reasonText}>{getReasonMessage(scanResult.reason)}</Text>
+              <Text style={styles.reasonText}>
+                {getReasonMessage(scanResult.reason)}
+              </Text>
             )}
             <TouchableOpacity style={styles.button} onPress={resetScanner}>
               <Ionicons name="scan-outline" size={20} color="#fff" />

@@ -5,28 +5,35 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import { getUserProfile } from '@/lib/auth';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useUser } from '@/context/UserContext';
 
-export default function LoginScreen({ navigation }: any) {
+type NavigationProp = NativeStackNavigationProp<any>;
+
+export default function LoginScreen() {
+  const navigation = useNavigation<NavigationProp>();
+  const { setRole } = useUser();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // 🚀 Auto-redirect se già loggato
   useEffect(() => {
     const checkUser = async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
         const profile = await getUserProfile(data.user.id);
         if (profile.role === 'manager') {
+          setRole('manager');
           navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
         }
       }
@@ -59,6 +66,7 @@ export default function LoginScreen({ navigation }: any) {
         return;
       }
 
+      setRole('manager');
       navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
     } catch (err: any) {
       await supabase.auth.signOut();
@@ -70,7 +78,13 @@ export default function LoginScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Image source={require('@/assets/clubster-logo.png')} style={styles.logoImage} />
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={24} color="#6b7280" />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Manager Login</Text>
 
       <TextInput
@@ -92,7 +106,10 @@ export default function LoginScreen({ navigation }: any) {
           value={password}
           placeholderTextColor="#999"
         />
-        <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)} style={styles.eyeButton}>
+        <TouchableOpacity
+          onPress={() => setShowPassword((prev) => !prev)}
+          style={styles.eyeButton}
+        >
           <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={20} color="#666" />
         </TouchableOpacity>
       </View>
@@ -121,12 +138,12 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#fff',
   },
-  logoImage: {
-    width: '80%',
-    height: 100,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-    marginBottom: 24,
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 1,
+    padding: 8,
   },
   title: {
     fontSize: 24,

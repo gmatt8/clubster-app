@@ -15,15 +15,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { getEventsForManager } from '@/api/events/route';
 import { useEvent } from '@/context/EventContext';
-
-type RootStackParamList = {
-  Login: undefined;
-  EventSelection: undefined;
-  Scanner: undefined;
-  Result: undefined;
-};
-
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'EventSelection'>;
+import { useUser } from '@/context/UserContext';
+import { supabase } from '@/lib/supabase';
 
 type Event = {
   id: string;
@@ -31,7 +24,9 @@ type Event = {
   start_date: string;
 };
 
-function formatDate(dateString: string): string {
+type NavigationProp = NativeStackNavigationProp<any>;
+
+function formatDate(dateString: string) {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -45,12 +40,34 @@ export default function EventSelectionScreen() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
   const { setSelectedEvent } = useEvent();
+  const { role, clubId } = useUser();
+
+  // ✅ Reset selected event at screen mount
+  useEffect(() => {
+    setSelectedEvent(null);
+  }, []);
 
   const loadEvents = async () => {
     try {
-      const data = await getEventsForManager();
-      setEvents(data);
+      if (role === 'code-user' && clubId) {
+        const now = new Date().toISOString();
+        const { data, error } = await supabase
+          .from('events')
+          .select('*')
+          .eq('club_id', clubId)
+          .or(`end_date.is.null,end_date.gte.${now}`)
+          .order('start_date', { ascending: true });
+
+        if (error) throw error;
+        setEvents(data || []);
+      } else if (role === 'manager') {
+        const data = await getEventsForManager();
+        setEvents(data);
+      } else {
+        setEvents([]); // fallback
+      }
     } catch (err) {
       console.error('Error loading events:', err);
     } finally {
@@ -61,7 +78,7 @@ export default function EventSelectionScreen() {
 
   useEffect(() => {
     loadEvents();
-  }, []);
+  }, [role, clubId]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -80,13 +97,13 @@ export default function EventSelectionScreen() {
         <FlatList
           data={events}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={events.length === 0 ? styles.emptyContainer : styles.listContent}
+          contentContainerStyle={
+            events.length === 0 ? styles.emptyContainer : styles.listContent
+          }
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#3b82f6"]} />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#3b82f6']} />
           }
-          ListEmptyComponent={
-            <Text style={styles.emptyText}>No events available.</Text>
-          }
+          ListEmptyComponent={<Text style={styles.emptyText}>No events available.</Text>}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}

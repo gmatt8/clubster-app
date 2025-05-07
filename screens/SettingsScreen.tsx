@@ -10,20 +10,39 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { supabase } from '@/lib/supabase';
 import Constants from 'expo-constants';
+import { useUser } from '@/context/UserContext';
+
+type NavigationProp = NativeStackNavigationProp<any>;
 
 export default function SettingsScreen() {
-  const navigation = useNavigation();
-  const [userEmail, setUserEmail] = useState('');
+  const navigation = useNavigation<NavigationProp>();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [codeData, setCodeData] = useState<{ code: string; name: string } | null>(null);
+  const { role, codeId, logout } = useUser();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (data.user?.email) setUserEmail(data.user.email);
+    const fetchData = async () => {
+      if (role === 'manager') {
+        const { data } = await supabase.auth.getUser();
+        setUserEmail(data.user?.email || null);
+      } else if (role === 'code-user' && codeId) {
+        const { data, error } = await supabase
+          .from('scan_access_codes')
+          .select('code, name')
+          .eq('id', codeId)
+          .single();
+
+        if (!error && data) {
+          setCodeData({ code: data.code, name: data.name });
+        }
+      }
     };
-    fetchUser();
-  }, []);
+
+    fetchData();
+  }, [role, codeId]);
 
   const handleLogout = async () => {
     Alert.alert('Log out', 'Are you sure you want to log out?', [
@@ -33,10 +52,28 @@ export default function SettingsScreen() {
         style: 'destructive',
         onPress: async () => {
           await supabase.auth.signOut();
-          navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+          await logout();
+          navigation.reset({ index: 0, routes: [{ name: 'Landing' }] });
         },
       },
     ]);
+  };
+
+  const renderUserInfo = () => {
+    if (role === 'manager' && userEmail) {
+      return <Text style={styles.email}>Manager Login: {userEmail}</Text>;
+    }
+
+    if (role === 'code-user' && codeData) {
+      return (
+        <>
+          <Text style={styles.email}>Code Access: {codeData.code}</Text>
+          <Text style={styles.email}>Name: {codeData.name}</Text>
+        </>
+      );
+    }
+
+    return <Text style={styles.email}>Unknown login</Text>;
   };
 
   return (
@@ -44,9 +81,7 @@ export default function SettingsScreen() {
       <View style={styles.header}>
         <Ionicons name="person-circle-outline" size={80} color="#3b82f6" />
         <Text style={styles.username}>Settings</Text>
-        {userEmail ? (
-          <Text style={styles.email}>{userEmail}</Text>
-        ) : null}
+        {renderUserInfo()}
       </View>
 
       <View style={styles.section}>
@@ -58,8 +93,10 @@ export default function SettingsScreen() {
       </View>
 
       <View style={styles.footer}>
-        <Text style={styles.version}>App version: {Constants.manifest?.version || '1.0.0'}</Text>
-      </View>
+      <Text style={styles.version}>
+  App version: {Constants.expoConfig?.version || '1.0.0'}
+</Text>
+ </View>
     </SafeAreaView>
   );
 }

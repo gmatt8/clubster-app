@@ -1,6 +1,7 @@
 //  App.tsx
 import React from 'react';
 import AppNavigator from './navigation/AppNavigator';
+import { UserProvider } from './context/UserContext';
 import { EventProvider } from './context/EventContext';
 
 // Fix per problemi di rete su simulatore iOS
@@ -20,7 +21,9 @@ if (__DEV__) {
 export default function App() {
   return (
     <EventProvider>
-      <AppNavigator />
+    <UserProvider>
+      <AppNavigator/>
+      </UserProvider>
     </EventProvider>
   );
 }
